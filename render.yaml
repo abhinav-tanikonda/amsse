@@ -1,0 +1,24 @@
+# Render Blueprint configuration for AMSSE backend.
+#
+# Usage:
+#   Render dashboard -> New -> Blueprint -> connect this repo.
+#   Render will read this file and auto-configure the web service.
+#
+# After first deploy, set CORS_ORIGINS in the Render dashboard:
+#   Key:   CORS_ORIGINS
+#   Value: https://your-project.vercel.app
+#
+# Do NOT set CORS_ORIGINS to * in production.
+# Do NOT set PORT manually — Render injects it automatically.
+
+services:
+  - type: web
+    name: amsse-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: CORS_ORIGINS
+        sync: false
